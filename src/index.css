@@ -1,0 +1,12 @@
+@import "tailwindcss";
+@plugin "daisyui";
+
+@theme {
+  /* Ekhane Montserrat ke default sans font hishebe set kora hoyeche */
+  --font-sans: "Montserrat", ui-sans-serif, system-ui, sans-serif;
+}
+
+/* Optional: Pura body-te apply korar jonno */
+body {
+  font-family: "Montserrat", sans-serif;
+}
