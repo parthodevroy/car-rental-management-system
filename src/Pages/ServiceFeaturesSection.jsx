@@ -63,7 +63,7 @@ const ServiceFeaturesSection = () => {
           <div className="relative w-full h-[350px] md:h-[450px] overflow-hidden mb-8 shadow-xl bg-white">
             <AnimatePresence mode="wait">
               <motion.img
-                key={activeTab} // key চেঞ্জ হলে এনিমেশন রি-ট্রিগার হবে
+                key={activeTab} 
                 src="https://images.unsplash.com/photo-1494976388531-d1058494cdd8?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" 
                 alt={activeService.title}
                 initial={{ opacity: 0, x: 20, scale: 1.05 }}

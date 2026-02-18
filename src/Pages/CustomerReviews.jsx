@@ -15,7 +15,7 @@ const CustomerReviews = () => {
       text: "I had an amazing car rental experience with 7Cars! The process was smooth and hassle-free, thankfully! The staff was very friendly, accommodating and provided excellent customer service. I highly recommend 7cars for their exceptional service. Five stars, for sure!!",
       author: "Abdul Kareem",
       image: "https://randomuser.me/api/portraits/men/32.jpg",
-      isWhite: true, // মাঝখানের হাইলাইটেড কার্ড
+      isWhite: true, 
     },
     {
       id: 3,
@@ -33,7 +33,6 @@ const CustomerReviews = () => {
     }
   ];
 
-  // Infinite লুপের জন্য অ্যারে ডাবল করা হয়েছে
   const loopReviews = [...reviews, ...reviews, ...reviews];
 
   return (
@@ -71,7 +70,7 @@ const CustomerReviews = () => {
           animate={{ x: ["0%", "-33.33%"] }}
           transition={{ 
             ease: "linear", 
-            duration: 40, // স্লাইড যত বেশি স্লো চান এই ভ্যালু বাড়িয়ে দিন (যেমন ৬০ বা ৮০)
+            duration: 40, 
             repeat: Infinity 
           }}
         >
