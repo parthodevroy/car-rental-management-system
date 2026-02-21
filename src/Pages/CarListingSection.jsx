@@ -1,148 +1,134 @@
-
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Autoplay, Pagination } from 'swiper/modules';
+// Navigation মডিউলটি যুক্ত করা হয়েছে
+import { Autoplay, Pagination, Navigation } from 'swiper/modules'; 
 import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 import 'swiper/css';
 import 'swiper/css/pagination';
+import 'swiper/css/navigation';
 
 const CarListingSection = () => {
-    const cars = [
-        { name: "Nissan Patrol For Rent", image: "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?q=80&w=1170&auto=format&fit=crop", engine: "6-Cylinder", seats: "7", year: "2024" },
-        { name: "Mercedes G63 For Rent", image: "https://images.unsplash.com/photo-1485291571150-772bcfc10da5?q=80&w=1228&auto=format&fit=crop", year: "2020", engine: "8-Cylinder", seats: "5" },
-        { name: "Nissan X-Trail for Rent", image: "https://images.unsplash.com/photo-1503376780353-7e6692767b70?q=80&w=1170&auto=format&fit=crop", year: "2025", engine: "4-Cylinder", seats: "5" },
-        { name: "Porsche Macan for Rent", image: "https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?q=80&w=1170&auto=format&fit=crop", year: "2023", engine: "4-Cylinder", seats: "5" },
-        { name: "Range Rover Sport", image: "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?q=80&w=1228&auto=format&fit=crop", year: "2024", engine: "6-Cylinder", seats: "5" },
-    ];
+    const [cars, setCars] = useState([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        fetch("https://car-rental-management-system-server.vercel.app/cars")
+            .then((res) => res.json())
+            .then((data) => {
+                setCars(data);
+                setLoading(false);
+            })
+            .catch(err => {
+                console.error("Error fetching cars:", err);
+                setLoading(false);
+            });
+    }, []);
+
+    if (loading) return <div className="py-24 bg-[#0F172A] text-white text-center font-black italic">LOADING ELITE FLEET...</div>;
 
     return (
-        <section className="w-full py-24 px-4 lg:px-10 bg-[#0F172A] relative overflow-hidden">
-            {/* Background Decor  */}
-            <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[#E11D48] opacity-5 blur-[150px] rounded-full pointer-events-none"></div>
-            <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-blue-600 opacity-5 blur-[150px] rounded-full pointer-events-none"></div>
-
+        <section className="w-full py-24 px-4 lg:px-10 bg-[#0F172A] relative overflow-hidden" style={{ perspective: '1200px' }}>
             <div className="max-w-7xl mx-auto relative z-10">
-                {/* --- Animated Header --- */}
-                <motion.div 
-                    initial={{ opacity: 0, y: -20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    className="mb-16 text-center"
-                >
-                    <motion.span 
-                        animate={{ opacity: [0.5, 1, 0.5] }}
-                        transition={{ duration: 2, repeat: Infinity }}
-                        className="text-[#E11D48] text-[12px] font-black uppercase tracking-[0.5em] mb-4 block"
-                    >
-                        — Discover Luxury —
-                    </motion.span>
+                
+                {/* --- Header --- */}
+                <motion.div initial={{ opacity: 0, y: -20 }} whileInView={{ opacity: 1, y: 0 }} className="mb-16 text-center">
                     <h2 className="text-white text-5xl lg:text-7xl font-[1000] italic tracking-tighter uppercase leading-none">
-                        Our Elite <span className="text-[#E11D48] drop-shadow-[0_0_15px_rgba(225,29,72,0.5)]">Fleet</span>
+                        Our Elite <span className="text-[#E11D48]">Fleet</span>
                     </h2>
                 </motion.div>
 
-                {/* --- Swiper Slider --- */}
-                <Swiper
-                    modules={[Autoplay, Pagination]}
-                    spaceBetween={30}
-                    slidesPerView={1}
-                    autoplay={{ delay: 4000 }}
-                    pagination={{ clickable: true }}
-                    breakpoints={{
-                        640: { slidesPerView: 2 },
-                        1024: { slidesPerView: 3 },
-                    }}
-                    className="pb-20 car-swiper"
-                >
-                    {cars.map((car, index) => (
-                        <SwiperSlide key={index}>
-                            <motion.div 
-                                initial={{ opacity: 0, scale: 0.9 }}
-                                whileInView={{ opacity: 1, scale: 1 }}
-                                transition={{ duration: 0.5, delay: index * 0.1 }}
-                                whileHover={{ y: -10, rotateX: 5, rotateY: -5 }} // 3D Tilt Effect
-                                className="bg-[#1E293B] group relative overflow-hidden rounded-[30px] border border-white/10 flex flex-col h-full shadow-2xl"
-                            >
-                                {/* Image Container */}
-                                <div className="relative h-[260px] overflow-hidden">
-                                    <img 
-                                        src={car.image} 
-                                        alt={car.name} 
-                                        className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-125" 
-                                    />
-                                    {/* Glassmorphism Badge */}
-                                    <div className="absolute top-5 right-5 backdrop-blur-md bg-white/10 border border-white/20 text-white text-[10px] font-bold px-4 py-2 rounded-full uppercase tracking-widest">
-                                        Model {car.year}
-                                    </div>
-                                </div>
+                {/* --- Swiper Wrapper with Custom Navigation --- */}
+                <div className="relative px-2 lg:px-12 group">
+                    
+                    {/* Navigation Arrows */}
+                    <button className="nav-prev absolute left-0 top-1/2 -translate-y-1/2 z-50 bg-[#E11D48] p-3 rounded-full text-white shadow-[0_0_20px_rgba(225,29,72,0.5)] transition-all hover:bg-white hover:text-[#E11D48] disabled:opacity-0">
+                        <ChevronLeft size={28} strokeWidth={3} />
+                    </button>
+                    
+                    <button className="nav-next absolute right-0 top-1/2 -translate-y-1/2 z-50 bg-[#E11D48] p-3 rounded-full text-white shadow-[0_0_20px_rgba(225,29,72,0.5)] transition-all hover:bg-white hover:text-[#E11D48] disabled:opacity-0">
+                        <ChevronRight size={28} strokeWidth={3} />
+                    </button>
 
-                                {/* Content */}
-                                <div className="p-8 flex-grow">
-                                    <h3 className="text-white text-center font-black text-2xl leading-tight uppercase italic group-hover:text-[#E11D48] transition-colors duration-300">
-                                        {car.name}
-                                    </h3>
-                                    
-                                    {/* Animated Divider */}
-                                    <div className="flex justify-center my-6">
-                                        <div className="w-12 h-1 bg-[#E11D48] group-hover:w-24 transition-all duration-500 rounded-full"></div>
-                                    </div>
-
-                                    {/* Specs with Neon Icons */}
-                                    <div className="grid grid-cols-2 gap-4">
-                                        <div className="bg-[#0F172A]/50 p-3 rounded-2xl flex items-center gap-3 border border-white/5">
-                                            <span className="text-xl">⚙️</span>
-                                            <span className="text-gray-400 text-[10px] font-bold uppercase">{car.engine}</span>
-                                        </div>
-                                        <div className="bg-[#0F172A]/50 p-3 rounded-2xl flex items-center gap-3 border border-white/5">
-                                            <span className="text-xl">👥</span>
-                                            <span className="text-gray-400 text-[10px] font-bold uppercase">{car.seats} Seats</span>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                {/* Booking Button - Slides up on Hover */}
-                                <div className="p-6 pt-0">
-                                    <button className="w-full bg-[#E11D48] text-white py-4 rounded-2xl font-black uppercase italic tracking-widest transform translate-y-2 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500 shadow-[0_10px_30px_rgba(225,29,72,0.4)]">
-                                        Rent Online Now
-                                    </button>
-                                </div>
-                            </motion.div>
-                        </SwiperSlide>
-                    ))}
-                </Swiper>
-
-                {/* --- Glowing View All Button --- */}
-                <div className="flex justify-center mt-10">
-                    <motion.button 
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                        className="group relative px-12 py-5 bg-transparent border-2 border-[#E11D48] text-white font-black uppercase italic tracking-[0.3em] overflow-hidden"
+                    <Swiper
+                        modules={[Autoplay, Pagination, Navigation]}
+                        navigation={{ prevEl: '.nav-prev', nextEl: '.nav-next' }}
+                        spaceBetween={30}
+                        slidesPerView={1}
+                        autoplay={{ delay: 4000 }}
+                        pagination={{ clickable: true }}
+                        breakpoints={{
+                            640: { slidesPerView: 2 },
+                            1024: { slidesPerView: 3 },
+                        }}
+                        className="car-swiper !pb-20"
                     >
-                        <span className="relative z-10 group-hover:text-white transition-colors">Explore All Cars</span>
-                        <div className="absolute inset-0 bg-[#E11D48] transform translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
-                    </motion.button>
+                        {cars.map((car, index) => (
+                            <SwiperSlide key={car._id} className="h-full">
+                                <Link to={`/cars/${car._id}`} className="block h-full">
+                                    <motion.div 
+                                        initial={{ opacity: 0, scale: 0.9 }}
+                                        whileInView={{ opacity: 1, scale: 1 }}
+                                        // 3D Motion Effect on Hover
+                                        whileHover={{ 
+                                            rotateY: 10, 
+                                            rotateX: 5, 
+                                            y: -15,
+                                            transition: { duration: 0.4 }
+                                        }}
+                                        className="bg-[#1E293B] border border-white/10 rounded-[30px] overflow-hidden flex flex-col h-[520px] shadow-2xl relative"
+                                    >
+                                        {/* Fixed Height Image */}
+                                        <div className="relative h-[250px] min-h-[250px] overflow-hidden">
+                                            <img 
+                                                src={car.images?.main} 
+                                                alt={car.carName} 
+                                                className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" 
+                                            />
+                                            <div className="absolute top-4 right-4 bg-black/40 backdrop-blur-md px-3 py-1 rounded-full text-[10px] text-white font-bold uppercase border border-white/20">
+                                                {car.year}
+                                            </div>
+                                        </div>
+
+                                        {/* Content - Flex Grow ensures same button alignment */}
+                                        <div className="p-6 flex flex-col flex-grow justify-between">
+                                            <div>
+                                                <h3 className="text-white text-xl font-black uppercase italic tracking-tight group-hover:text-[#E11D48] transition-colors line-clamp-1">
+                                                    {car.carName}
+                                                </h3>
+                                                <div className="w-10 h-1 bg-[#E11D48] my-3 rounded-full"></div>
+                                                
+                                                <div className="grid grid-cols-2 gap-3 mt-4">
+                                                    <div className="bg-[#0F172A] p-3 rounded-xl border border-white/5 flex flex-col items-center">
+                                                        <span className="text-[10px] text-gray-500 uppercase font-bold">Power</span>
+                                                        <span className="text-white text-xs font-black">{car.horsepower_hp} HP</span>
+                                                    </div>
+                                                    <div className="bg-[#0F172A] p-3 rounded-xl border border-white/5 flex flex-col items-center">
+                                                        <span className="text-[10px] text-gray-500 uppercase font-bold">Capacity</span>
+                                                        <span className="text-white text-xs font-black">{car.seats} SEATS</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            {/* Button always at bottom */}
+                                            <button className="w-full bg-[#E11D48] text-white py-4 rounded-xl font-black uppercase italic tracking-widest text-xs hover:bg-white hover:text-black transition-all duration-300 shadow-[0_10px_20px_rgba(225,29,72,0.3)]">
+                                                View Details
+                                            </button>
+                                        </div>
+                                    </motion.div>
+                                </Link>
+                            </SwiperSlide>
+                        ))}
+                    </Swiper>
                 </div>
             </div>
 
-            <style jsx global>{`
-                .car-swiper .swiper-pagination-bullet { 
-                    background: #E11D48 !important; 
-                    opacity: 0.2; 
-                    height: 8px; 
-                    width: 8px;
-                    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-                }
-                .car-swiper .swiper-pagination-bullet-active { 
-                    opacity: 1; 
-                    width: 35px !important; 
-                    border-radius: 20px !important; 
-                    box-shadow: 0 0 15px rgba(225,29,72,0.6);
-                }
-                .car-swiper { padding-bottom: 80px !important; }
-                
-                /* 3D Perspective for parent container */
-                section { perspective: 1000px; }
+            <style jsx="true" global="true">{`
+                .car-swiper .swiper-pagination-bullet { background: #E11D48 !important; opacity: 0.3; }
+                .car-swiper .swiper-pagination-bullet-active { width: 30px !important; border-radius: 10px !important; opacity: 1; }
+                .nav-prev.swiper-button-disabled, .nav-next.swiper-button-disabled { opacity: 0.2; cursor: not-allowed; }
             `}</style>
         </section>
     );

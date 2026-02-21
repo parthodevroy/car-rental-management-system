@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { ChevronLeft, ChevronRight, Calendar } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Link } from 'react-router';
 
 const HeroSection = () => {
     const [currentSlide, setCurrentSlide] = useState(0);
@@ -68,9 +69,9 @@ const HeroSection = () => {
                                 {slides[currentSlide].make} <br />
                                 <span className="text-[#E11D48]">{slides[currentSlide].model}</span>
                             </h2>
-                            <button className="bg-white text-[#1B2532] hover:bg-[#E11D48] hover:text-white px-12 py-5 font-black text-lg italic uppercase transition-all duration-300 shadow-2xl">
+                            <Link to={"/our-fleet"}><button className="bg-white text-[#1B2532] hover:bg-[#E11D48] hover:text-white px-12 py-5 font-black text-lg italic uppercase transition-all duration-300 shadow-2xl">
                                 Rent Now
-                            </button>
+                            </button></Link>
                         </motion.div>
                     </div>
 
@@ -105,7 +106,7 @@ const HeroSection = () => {
                <div className="lg:w-1/2">
                    <h4 className="text-[12px] font-bold text-[#E11D48] uppercase tracking-[0.4em] mb-4 italic">Helps you to find your next car easily</h4>
                    <h3 className="text-4xl lg:text-6xl font-black text-[#1B2532] mb-8 leading-[1.1]">
-                       Welcome to <span className="text-[#E11D48] italic">7Cars</span> <br /> Rent A Car
+                       Welcome to <span className="text-[#E11D48] italic">Yemenyi Rental</span> <br /> Rent A Car
                    </h3>
                    <p className="text-gray-500 text-lg leading-relaxed mb-10 italic">
                        Rent a car that fits your budget at an incredibly affordable price. Our selection includes Exotic Car, Luxury Car & Sports Car.
@@ -126,7 +127,7 @@ const HeroSection = () => {
                 <div className="lg:w-1/2 relative">
                     <div className="absolute -inset-4 bg-[#E11D48]/5 rounded-full blur-3xl"></div>
                     <img
-                        src="https://i.ibb.co.com/5ghGzWc7/dan-gold-N7-Ri-Dzf-F2iw-unsplash-removebg-preview.png"
+                        src="https://i.ibb.co/YFL8Xhhw/hamza-younas-d-Lj744-XVa2s-unsplash-removebg-preview.png"
                         className="w-full relative z-10 hover:translate-y-[-10px] transition-transform duration-700"
                         alt="Welcome Car"
                     />
@@ -152,9 +153,9 @@ const HeroSection = () => {
                     <div className="absolute inset-0 bg-[#25D366] rounded-full animate-ping opacity-20"></div>
                     
                     {/* Tooltip for User Experience */}
-                    <span className="absolute right-full mr-4 bg-[#1B2532] text-white text-[10px] font-black uppercase tracking-widest px-4 py-2 rounded shadow-xl hidden lg:block whitespace-nowrap">
+                    {/* <span className="absolute right-full mr-4 bg-[#1B2532] text-white text-[10px] font-black uppercase tracking-widest px-4 py-2 rounded shadow-xl hidden lg:block whitespace-nowrap">
                         Online Support
-                    </span>
+                    </span> */}
 
                     <img
                         src="https://cdn-icons-png.flaticon.com/512/733/733585.png"

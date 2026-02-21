@@ -8,10 +8,12 @@ const OurFleet = () => {
   const carsPerPage = 9;
 
   useEffect(() => {
-    fetch("http://localhost:5000/cars")
+    fetch("https://car-rental-management-system-server.vercel.app/cars")
       .then((res) => res.json())
       .then((data) => setCars(data));
   }, []);
+  console.log(cars);
+  
 
   // Pagination logic
   const indexOfLastCar = currentPage * carsPerPage;
@@ -22,7 +24,7 @@ const OurFleet = () => {
     <div className="bg-[#F8F9FB] min-h-screen">
       {/* --- HERO BANNER --- */}
       <div className="h-[420px] bg-[#1B2532] relative flex items-center justify-center">
-        <div className="absolute inset-0 opacity-40 bg-[url('https://images.unsplash.com/photo-1632441730372-d8509de481d1?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')]"></div>
+        <div className="absolute inset-0 opacity-40 bg-[url('https://plus.unsplash.com/premium_photo-1661872905858-f6801fa216e9?q=80&w=1171&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')]"></div>
         <h1 className="text-white text-5xl pt-20 font-black italic uppercase tracking-tighter z-10">Vehicle Listings</h1>
       </div>
 
@@ -53,7 +55,7 @@ const OurFleet = () => {
               {/* Price Range Slider */}
               <div className="mb-8">
                 <label className="text-[11px] font-black text-gray-400 uppercase tracking-widest block mb-4">Price Range</label>
-                <input 
+                <input
                   type="range" min="0" max="9999" value={priceRange}
                   onChange={(e) => setPriceRange(e.target.value)}
                   className="w-full h-1 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-[#E11D48]"
@@ -124,32 +126,50 @@ const OurFleet = () => {
 };
 
 // --- SUB-COMPONENT: CAR CARD ---
+
 const CarCard = ({ car }) => (
-  <div className="bg-[#1B2532] group cursor-pointer shadow-lg overflow-hidden flex flex-col h-full">
+  <Link
+    to={`/cars/${car._id}`}
+    className="bg-[#1B2532] group cursor-pointer shadow-lg overflow-hidden flex flex-col h-full"
+  >
+    {/* ইমেজের অংশ - উইকলি/মান্থলি প্রাইস ওভারলে সহ */}
     <div className="relative h-52 overflow-hidden">
-      <img src={car.images?.main} alt={car.carName} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+      <img
+        src={car.images?.main}
+        alt={car.carName}
+        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+      />
       <div className="absolute bottom-0 left-0 right-0 bg-[#16202B]/90 text-[10px] text-white font-black italic flex justify-between px-4 py-2 uppercase tracking-tighter">
         <span>AED {car.prices?.weekly} /WEEK</span>
         <span className="opacity-30">|</span>
         <span>AED {car.prices?.monthly} /MONTH</span>
       </div>
     </div>
+
+    {/* টেক্সট এবং ডিটেইলস অংশ */}
     <div className="p-6 text-center flex-1 flex flex-col justify-between">
       <div>
         <h3 className="text-white text-[17px] font-black uppercase italic tracking-tighter mb-2 leading-tight">
           {car.carName || `${car.make} ${car.model}`} For Rent
         </h3>
         <div className="flex justify-center items-center gap-2 text-[10px] text-gray-400 font-bold mb-4 italic uppercase">
-          <span>{car.year}</span> <span>|</span> <span>{car.horsepower_hp || '4-Cylender'}</span> <span>|</span> <span>{car.seats}</span> <span>|</span> <span>{car.color}</span>
+          <span>{car.year}</span>
+          <span>|</span>
+          <span>{car.horsepower_hp || '4-Cylender'}</span>
+          <span>|</span>
+          <span>{car.seats}</span>
+          <span>|</span>
+          <span className="capitalize">{car.color}</span>
         </div>
       </div>
+
+      {/* ডেইলি প্রাইস সেকশন */}
       <div className="border-t border-white/10 pt-4">
         <p className="text-[#FFFFFF] text-xl font-[1000] italic uppercase tracking-tighter">
           AED {car.prices?.daily} <span className="text-[10px] font-normal opacity-50 italic">/DAY</span>
         </p>
       </div>
     </div>
-  </div>
+  </Link>
 );
-
 export default OurFleet;

@@ -20,7 +20,7 @@ const ContactForm = () => {
         {/* --- Header Area --- */}
         <div className="mb-10">
           <h2 className="text-4xl lg:text-5xl font-[1000] text-[#1B2532] tracking-tighter">
-            Get In Touch With <span className="text-[#E11D48]">7Cars Rent A Car</span>
+            Get In Touch With <span className="text-[#E11D48]">Yemenyi Rental Rent A Car</span>
           </h2>
           <p className="mt-6 text-gray-600 text-lg max-w-5xl leading-relaxed">
             Have questions or need help choosing the right car? Our team is here to assist you. 
